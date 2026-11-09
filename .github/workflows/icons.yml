@@ -1,0 +1,49 @@
+name: Generate icons
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "assets/icon.svg"
+      - "build/generate_icons.py"
+      - "build/icon-requirements.txt"
+      - ".github/workflows/icons.yml"
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref:
+        description: "Commit or tag to render"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  icons:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install SVG renderer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcairo2
+          python -m pip install -r build/icon-requirements.txt
+      - name: Generate and verify PNG and ICO
+        run: python build/generate_icons.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-icons
+          path: |
+            assets/icon.svg
+            dist/icons/*.png
+            dist/icons/*.ico
+          if-no-files-found: error
+          retention-days: 30

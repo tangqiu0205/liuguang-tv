@@ -1,0 +1,15 @@
+{
+  "name": "LiuguangTV",
+  "identifier": "io.github.tangqiu0205.liuguangtv",
+  "slug": "liuguangtv",
+  "version": "0.1.0",
+  "main": "./cmd/liuguangtv",
+  "out": "dist/mygo",
+  "updates": {
+    "publicKey": "XdHqUMVNQc9M5qhZZQKITI4mr/t2/4jdiXmxsDoo8OA=",
+    "github": "tangqiu0205/liuguang-tv"
+  },
+  "linux": {
+    "categories": ["AudioVideo", "Video", "Player"]
+  }
+}

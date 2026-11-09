@@ -1,0 +1,34 @@
+/dist/
+*.log
+__pycache__/
+*.py[cod]
+/.icon-artifacts/
+/cmd/liuguangtv/rsrc_windows_*.syso
+
+# Local build outputs (build/ contains tracked release scripts)
+/LiuguangTV
+/LiuguangTV.exe
+/coverage.out
+*.prof
+
+# Personal application data and backups
+/state.json
+/state.json.bak
+/state-corrupt-*.json
+/LiuguangTV-backup*.json
+/import-backups/
+
+# Local credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+
+# Editor and operating system files
+/.idea/
+/.openidea/
+/.vscode/
+.DS_Store
+Thumbs.db

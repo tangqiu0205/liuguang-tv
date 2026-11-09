@@ -1,0 +1,6 @@
+#EXTM3U
+# Example only: replace these reserved example.org URLs with authorized stream addresses.
+#EXTINF:-1 tvg-id="news-demo" group-title="新闻",新闻频道（格式示例）
+https://example.org/news/index.m3u8
+#EXTINF:-1 tvg-id="sports-demo" group-title="体育",体育频道（格式示例）
+https://example.org/sports/index.m3u8

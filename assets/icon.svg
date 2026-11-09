@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>流光 TV</title>
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#303039"/><stop offset="1" stop-color="#111116"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fff0bd"/><stop offset="0.5" stop-color="#e9bd68"/><stop offset="1" stop-color="#b77730"/>
+    </linearGradient>
+    <linearGradient id="trail" x1="0" y1="1" x2="1" y2="0">
+      <stop stop-color="#d79b45" stop-opacity="0"/><stop offset="0.5" stop-color="#e9bd68"/><stop offset="1" stop-color="#fff0bd"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#base)"/>
+  <rect x="17" y="17" width="478" height="478" rx="111" fill="none" stroke="#e9bd68" stroke-opacity="0.22" stroke-width="2"/>
+  <path d="M83 330 C134 417 346 424 414 279" fill="none" stroke="url(#trail)" stroke-width="20" stroke-linecap="round"/>
+  <path d="M105 364 C201 461 399 397 435 250" fill="none" stroke="url(#trail)" stroke-opacity="0.4" stroke-width="6" stroke-linecap="round"/>
+  <path d="M207 149 Q190 139 190 160 L190 334 Q190 355 208 344 L351 260 Q369 249 351 238 Z" fill="url(#gold)"/>
+  <path d="M387 115 L392 132 L409 137 L392 142 L387 159 L382 142 L365 137 L382 132 Z" fill="#ffe4a1"/>
+</svg>
