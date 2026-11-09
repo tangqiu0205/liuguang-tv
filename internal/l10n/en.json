@@ -290,6 +290,7 @@
   "设置错误 ": "Settings error ",
   "设置页面": "Settings page",
   "设置顶栏": "Settings header",
+  "设置拖动区": "Settings drag area",
   "诊断日志写入失败，请检查配置目录的 logs/ 权限和磁盘空间。": "Failed to write diagnostic logs. Check logs/ permissions and free disk space in the configuration directory.",
   "该频道没有已启用的播放线路": "This channel has no enabled playback routes",
   "请调整搜索或筛选条件": "Try a different search or filter",

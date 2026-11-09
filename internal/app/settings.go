@@ -30,8 +30,8 @@ func (a *application) settingsPanel(c *ui.Context) {
 	ui.Row(c).Label(tr("设置页面")).Grow(1).MinHeight(0).AlignItems(ui.Stretch).Background(t.Background).Children(func() {
 		a.settingsTabs(c)
 		ui.Column(c).Grow(1).MinWidth(0).MinHeight(0).Children(func() {
-			ui.Column(c).Padding(max(16, c.TitleBar().Height), 24, 16, 24).Gap(6).Shrink(0).Children(func() {
-				ui.Row(c).Label(tr("设置顶栏")).MinHeight(56).DragWindow().AlignItems(ui.Center).Gap(12).Children(func() {
+			ui.Column(c).Label(tr("设置拖动区")).Padding(max(0, c.TitleBar().Height-24), 24, 16, 24).Gap(6).Shrink(0).DragWindow().Children(func() {
+				ui.Row(c).Label(tr("设置顶栏")).MinHeight(56).Padding(0, c.TitleBar().Right, 0, 0).AlignItems(ui.Center).Gap(12).Children(func() {
 					ui.Column(c).Label(tr("设置标题图标")).Size(44, 44).Radius(14).Background(selectedBackground(t)).Center().Children(func() {
 						ui.Icon(c, gearIcon).Size(27, 27).TextColor(t.Accent)
 					})

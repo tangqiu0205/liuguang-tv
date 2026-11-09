@@ -215,8 +215,8 @@ func TestSettingsHeaderPlacesReturnBelowCaptionControls(t *testing.T) {
 	}
 	button := requiredRect(t, tt, "返回播放")
 	header := requiredRect(t, tt, "设置顶栏")
-	if button.Y < 32 || button.X+button.W != header.X+header.W {
-		t.Fatal("return button should be right-aligned below caption controls")
+	if button.X+button.W != header.X+header.W-140 {
+		t.Fatal("return button should be aligned before caption controls")
 	}
 }
 

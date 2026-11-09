@@ -11,7 +11,7 @@ MyGo CLI 通过 `go.mod` 的 `tool github.com/egoist/mygo/cmd/mygo` 声明，使
 构建矩阵与 `tiaopin-fm` 一致：
 
 - macOS：`macos-15` 构建 arm64，`macos-15-intel` 构建 amd64。
-- Windows：在 `ubuntu-24.04` 安装 NSIS，一次交叉构建 amd64 和 arm64；另设 `windows-latest` 任务运行 Windows 测试和 vet。
+- Windows：`windows-2022` 和 `windows-11-arm` 分别原生测试、执行 vet 并构建 amd64 和 arm64 包；MyGo 使用已安装的 NSIS，缺失时在 Windows 上自动下载。
 - Linux：在 `ubuntu-24.04` / `ubuntu-24.04-arm` 分别构建 amd64 / arm64。更旧系统的兼容性需另行验证。
 
 | 平台 | 安装包与分发包 |
@@ -44,7 +44,7 @@ MyGo CLI 通过 `go.mod` 的 `tool github.com/egoist/mygo/cmd/mygo` 声明，使
 1. 打标签前在 `CHANGELOG.md` 中新增唯一、非空的 `## MAJOR.MINOR.PATCH` 章节。MyGo 将章节内容写入更新清单；发布前检查六个平台的说明非空且一致。
 2. 推送标签或手动选择兼容新打包布局的标签，CI 提前检查签名密钥与更新日志，然后创建草稿；已有同标签 Release 则复用。
 3. 各平台完成构建、收集产物并生成各自的 `SHA256SUMS.txt`，使用 `gh release upload --clobber` 上传安装包、归档、清单、Windows ZIP 和可选增量包。
-4. 所有平台及 Windows 原生测试成功后，下载 artifacts、校验哈希、全量与增量签名及便携内容，生成并上传一份汇总 `SHA256SUMS.txt`，更新 Release 说明并发布为 Latest。各任务自己的同名校验值文件只在 CI artifacts 中保留，避免互相覆盖。
+4. 所有平台原生测试及构建成功后，下载 artifacts、校验哈希、全量与增量签名及便携内容，生成并上传一份汇总 `SHA256SUMS.txt`，更新 Release 说明并发布为 Latest。各任务自己的同名校验值文件只在 CI artifacts 中保留，避免互相覆盖。
 
 同标签重跑会直接覆盖同名资产，包括已经发布的版本，不要求旧资产哈希或说明一致，也不自动删除无同名替代的额外资产。已发布版本重跑期间仍可见，资产可能暂时来自不同构建；正常更新仍建议发布新标签。旧布局标签不应由新工作流重新打包，新工作流会明确拒绝；需要重跑旧版时使用该版本原有工作流。
 

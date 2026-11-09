@@ -96,7 +96,8 @@ jobs:
         include:
           - { name: macOS-arm64, runner: macos-15, platform: "darwin/arm64" }
           - { name: macOS-amd64, runner: macos-15-intel, platform: "darwin/amd64" }
-          - { name: Windows, runner: ubuntu-24.04, platform: "windows/amd64,windows/arm64" }
+          - { name: Windows-amd64, runner: windows-2022, platform: "windows/amd64" }
+          - { name: Windows-arm64, runner: windows-11-arm, platform: "windows/arm64" }
           - { name: Linux-amd64, runner: ubuntu-24.04, platform: "linux/amd64" }
           - { name: Linux-arm64, runner: ubuntu-24.04-arm, platform: "linux/arm64" }
     runs-on: ${{ matrix.runner }}
@@ -114,21 +115,24 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
+          architecture: ${{ matrix.name == 'Windows-arm64' && 'arm64' || '' }}
       - uses: actions/setup-python@v5
+        if: matrix.name != 'Windows-arm64'
         with:
           python-version: "3.12"
+      - uses: actions/setup-python@v5
+        if: matrix.name == 'Windows-arm64'
+        with:
+          python-version: "3.12"
+          architecture: arm64
       - name: Install Linux runtime libraries
         if: startsWith(matrix.runner, 'ubuntu-')
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-0t64 libgl1 libegl1
-      - name: Install NSIS for Windows installers
-        if: matrix.name == 'Windows'
-        run: sudo apt-get install -y nsis
       - name: Test packaging
         run: python -m unittest discover -s build -p 'test_*.py' -v
       - name: Test and vet native platforms
-        if: matrix.name != 'Windows'
         run: |
           go test ./...
           go vet ./...
@@ -137,15 +141,16 @@ jobs:
           name: app-icons
           path: .icon-artifacts
       - name: Embed Windows application icon
-        if: matrix.name == 'Windows'
+        if: startsWith(matrix.platform, 'windows/')
+        env:
+          PLATFORMS: ${{ matrix.platform }}
         run: |
           set -euo pipefail
           icon=.icon-artifacts/dist/icons/liuguangtv.ico
           test -f "$icon"
-          for arch in amd64 arm64; do
-            go run github.com/tc-hib/go-winres@v0.3.3 simply --icon "$icon" --manifest none --arch "$arch" --out cmd/liuguangtv/rsrc
-            test -f "cmd/liuguangtv/rsrc_windows_$arch.syso"
-          done
+          arch=${PLATFORMS#windows/}
+          go run github.com/tc-hib/go-winres@v0.3.3 simply --icon "$icon" --manifest none --arch "$arch" --out cmd/liuguangtv/rsrc
+          test -f "cmd/liuguangtv/rsrc_windows_$arch.syso"
       - name: Generate macOS application icon
         if: startsWith(matrix.platform, 'darwin/')
         run: |
@@ -195,30 +200,8 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  test-windows:
-    runs-on: windows-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.sha }}
-          persist-credentials: false
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Test Windows
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -m unittest discover -s build -p 'test_*.py' -v
-          go test ./...
-          go vet ./...
-
   release:
-    needs: [metadata, build, test-windows]
+    needs: [metadata, build]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -250,7 +233,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir publish-assets
-          for target in macOS-arm64 macOS-amd64 Windows Linux-amd64 Linux-arm64; do
+          for target in macOS-arm64 macOS-amd64 Windows-amd64 Windows-arm64 Linux-amd64 Linux-arm64; do
             (cd "release-assets/packages-$target" && sha256sum --check SHA256SUMS.txt)
             find "release-assets/packages-$target" -maxdepth 1 -type f ! -name SHA256SUMS.txt -exec cp -n -t publish-assets/ {} +
           done

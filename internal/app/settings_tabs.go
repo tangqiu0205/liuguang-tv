@@ -8,7 +8,7 @@ import (
 
 func (a *application) settingsTabs(c *ui.Context) {
 	t := c.Theme()
-	ui.Column(c).Label(tr("设置标签栏")).Width(180).Shrink(0).MinHeight(0).Padding(20, 12).Gap(6).Background(panelBackground(t)).BorderWidth(0, 1, 0, 0).BorderColor(t.Border).Children(func() {
+	ui.Column(c).Label(tr("设置标签栏")).Width(180).Shrink(0).MinHeight(0).DragWindow().Padding(20, 12).Gap(6).Background(panelBackground(t)).BorderWidth(0, 1, 0, 0).BorderColor(t.Border).Children(func() {
 		ui.Row(c).Height(54).Gap(10).AlignItems(ui.Center).Children(func() {
 			ui.Image(c, appIcon).Label(tr("设置应用图标")).Size(32, 32).Shrink(0)
 			ui.Column(c).Gap(2).Children(func() {

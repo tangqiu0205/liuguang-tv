@@ -74,7 +74,8 @@ class PackagingTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
         self.assertIn('zipped.writestr("portable.flag", "")', package)
         self.assertIn("liuguangtv-portable-{version}-windows-{arch}.zip", package)
-        self.assertIn("Install NSIS for Windows installers", workflow)
+        self.assertIn('name: Windows-amd64, runner: windows-2022, platform: "windows/amd64"', workflow)
+        self.assertIn('name: Windows-arm64, runner: windows-11-arm, platform: "windows/arm64"', workflow)
         self.assertIn("go tool mygo build", workflow)
         self.assertFalse((ROOT / "build/package_unix.py").exists())
         self.assertFalse((ROOT / "build/windows/package.ps1").exists())
@@ -131,11 +132,12 @@ class PackagingTests(unittest.TestCase):
 
     def test_workflow_publishes_only_after_successful_build(self):
         workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
-        for required in ('tags: ["v*"]', 'needs: [metadata, build, test-windows]', 'contents: write', 'go run ./build/verifyupdate', 'sha256sum --check SHA256SUMS.txt', 'go-version-file: go.mod', 'python-version: "3.12"'):
+        for required in ('tags: ["v*"]', 'needs: [metadata, build]', 'contents: write', 'go run ./build/verifyupdate', 'sha256sum --check SHA256SUMS.txt', 'go-version-file: go.mod', 'python-version: "3.12"'):
             self.assertIn(required, workflow)
         self.assertIn('build/package_release.py', workflow)
         self.assertIn('needs: [metadata, icons]', workflow)
-        self.assertIn('test-windows:', workflow)
+        self.assertNotIn('test-windows:', workflow)
+        self.assertIn('Windows-amd64 Windows-arm64', workflow)
         self.assertIn('ref: ${{ needs.metadata.outputs.commit }}', workflow)
         self.assertNotIn('needs.build.outputs', workflow)
         self.assertIn('secrets.MYGO_UPDATER_PRIVATE_KEY', workflow)

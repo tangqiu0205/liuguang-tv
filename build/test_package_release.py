@@ -99,10 +99,13 @@ class PackageReleaseTests(unittest.TestCase):
 
     def test_workflow_matches_reference_build_matrix_and_gates_publication(self):
         workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
-        for required in ('platform: "windows/amd64,windows/arm64"', "runner: ubuntu-24.04", "macos-15-intel", "macos-15", "ubuntu-24.04-arm", "test-windows:",
-                         "needs: [metadata, build, test-windows]", "pattern: packages-*", "go run ./build/verifyupdate", "--clobber", "go test ./...", "go vet ./..."):
+        for required in ('name: Windows-amd64, runner: windows-2022, platform: "windows/amd64"',
+                         'name: Windows-arm64, runner: windows-11-arm, platform: "windows/arm64"',
+                         "runner: ubuntu-24.04", "macos-15-intel", "macos-15", "ubuntu-24.04-arm",
+                         "needs: [metadata, build]", "pattern: packages-*", "go run ./build/verifyupdate", "--clobber", "go test ./...", "go vet ./...",
+                         "Windows-amd64 Windows-arm64", "architecture: arm64", 'arch=${PLATFORMS#windows/}'):
             self.assertIn(required, workflow)
-        for obsolete in ("package_unix.py", "build/windows/package.ps1", "windows-11-arm", "-eq 24", "-eq 4", "continue-on-error"):
+        for obsolete in ("package_unix.py", "build/windows/package.ps1", "test-windows:", "-eq 24", "-eq 4", "continue-on-error"):
             self.assertNotIn(obsolete, workflow)
         config = json.loads((ROOT / "mygo.json").read_text(encoding="utf-8"))
         self.assertNotIn("deltas", config["updates"])
