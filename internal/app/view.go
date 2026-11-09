@@ -153,9 +153,6 @@ func (a *application) playbackHeader(c *ui.Context) {
 				label = "LIVE"
 			}
 		}
-		if iconButton(c.Key("check-updates"), tr("检查更新"), updateIcon, false, false).Clicked() {
-			checkForUpdates()
-		}
 		// Playback controls already show the state. In a narrow pane, give
 		// the channel and program summary priority over the duplicate badge.
 		if contentWidth >= 300 {

@@ -44,7 +44,6 @@ var (
 	leftIcon            = svgIcon(`<path d="m14 6-6 6 6 6"/>`)
 	rightIcon           = svgIcon(`<path d="m10 6 6 6-6 6"/>`)
 	downIcon            = svgIcon(`<path d="m6 9 6 6 6-6"/>`)
-	updateIcon          = svgIcon(`<path d="M12 16V3m-5 5 5-5 5 5M4 15v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/>`)
 	refreshIcon         = svgIcon(`<path d="M20 7v5h-5M4 17v-5h5M6 7a7 7 0 0 1 12-1l2 6M4 12l2 6a7 7 0 0 0 12-1"/>`)
 	deleteIcon          = svgIcon(`<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/>`)
 	tvIcon              = svgIcon(`<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m9 2 3 3 3-3M8 22h8"/>`)
