@@ -42,12 +42,15 @@ func (a *application) selectLibrarySource(id string) {
 func (a *application) sourceSelector(c *ui.Context) {
 	t := c.Theme()
 	title := a.sourceTitle()
-	b := ui.ButtonBase(c.Key("source-selector")).Label(tr("切换订阅源")).Tooltip(tr("切换订阅源 · ")+title).Grow(1).MinWidth(0).Height(32).Padding(0, 4).Radius(7).Justify(ui.Start).Gap(7)
+	b := ui.ButtonBase(c.Key("source-selector")).Label(tr("切换订阅源")).Tooltip(tr("切换订阅源 · ")+title).Grow(1).MinWidth(0).Height(44).Padding(0, 4).Radius(7).Justify(ui.Start).Gap(7)
 	if b.Hovered() {
 		b.Background(t.SurfaceHover)
 	}
 	b.Children(func() {
-		ui.Text(c, title).FontSize(15).Bold().SingleLine().MinWidth(0).Grow(1)
+		ui.Column(c).Grow(1).MinWidth(0).Gap(2).Children(func() {
+			ui.Text(c, tr("当前播放列表")).FontSize(10).TextColor(t.TextMuted).SingleLine()
+			ui.Text(c, title).FontSize(15).Bold().SingleLine().MinWidth(0)
+		})
 		ui.Icon(c, downIcon).Size(12, 12).Shrink(0).TextColor(t.TextMuted)
 	})
 	b.Menu(func(menu *ui.Menu) {

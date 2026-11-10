@@ -165,10 +165,11 @@ func (a *application) channelPanel(c *ui.Context) {
 	t := c.Theme()
 	a.ensureChannelIndex()
 	ui.Column(c).Label(tr("频道面板")).Width(310).Shrink(0).MinHeight(0).Clip().Padding(12).Background(sidebarBackground(c)).BorderWidth(0, 0.5, 0, 0).BorderColor(t.Border).Gap(12).Children(func() {
-		ui.Row(c).Label(tr("频道标题")).Padding(4, 2, 4, max(2, c.TitleBar().Left-12)).DragWindow().Gap(6).Children(func() {
-			ui.Image(c, appIcon).Label(tr("应用图标")).Size(28, 28).Shrink(0)
+		ui.Row(c).Label(tr("频道标题")).Padding(4, 2, 4, max(2, c.TitleBar().Left-12)).DragWindow().AlignItems(ui.Center).Gap(6).Children(func() {
+			ui.Image(c, appIcon).Label(tr("应用图标")).Tooltip(tr("流光 TV")).Size(28, 28).Shrink(0)
+			ui.Column(c).Label(tr("应用图标分隔线")).Width(1).Height(32).Shrink(0).Background(t.Border)
 			a.sourceSelector(c)
-			badge(c, fmt.Sprint(len(a.libraryIndex().channels)), false)
+			ui.Text(c, fmt.Sprint(len(a.libraryIndex().channels))).FontSize(10).Bold().TextColor(t.TextMuted).Background(t.Surface).Border(1, t.Border).Radius(5).Padding(4, 7).Shrink(0)
 			if iconButton(c, tr("播放器设置"), settingsIcon, false, false).Clicked() {
 				a.showSettings = true
 				a.settle = 3
