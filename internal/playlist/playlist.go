@@ -34,6 +34,7 @@ type Channel struct {
 	Group      string        `json:"group"`
 	URL        string        `json:"url"`
 	TVGID      string        `json:"tvgId,omitempty"`
+	Logo       string        `json:"logo,omitempty"`
 	Headers    StreamHeaders `json:"headers,omitzero"`
 }
 
@@ -151,6 +152,15 @@ func parse(r io.Reader, base *url.URL, epgURLs *[]string, skippedReferers *int) 
 					}
 				case "tvg-id":
 					pending.TVGID = m[2]
+				case "tvg-logo":
+					if u, err := url.Parse(strings.TrimSpace(m[2])); err == nil && m[2] != "" {
+						if base != nil {
+							u = base.ResolveReference(u)
+						}
+						if (u.Scheme == "http" || u.Scheme == "https") && u.Host != "" && u.User == nil {
+							pending.Logo = u.String()
+						}
+					}
 				case "tvg-name":
 					if pending.Name == "" {
 						pending.Name = m[2]

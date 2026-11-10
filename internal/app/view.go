@@ -287,7 +287,13 @@ func (a *application) channelPanel(c *ui.Context) {
 							iconColor = t.Accent
 							iconBG = paletteFor(t).ActiveIcon
 						}
-						ui.Column(c).Size(32, 32).Shrink(0).Center().Radius(9).Background(iconBG).Children(func() { ui.Icon(c, tvIcon).Size(16, 16).TextColor(iconColor) })
+						ui.Column(c).Size(32, 32).Shrink(0).Center().Radius(9).Background(iconBG).Children(func() {
+							if logo := a.logos.get(ch.Logo, c.Services()); logo != nil {
+								ui.Image(c, logo).Size(30, 30).Shrink(0)
+							} else {
+								ui.Icon(c, tvIcon).Size(16, 16).TextColor(iconColor)
+							}
+						})
 						ui.Column(c).Grow(1).MinWidth(0).Gap(4).Children(func() {
 							color := t.Text
 							if active {

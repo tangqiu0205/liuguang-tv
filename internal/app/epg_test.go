@@ -72,7 +72,7 @@ func TestEPGLayout(t *testing.T) {
 			}
 			tt.SetTitleBar(ui.TitleBar{Height: 40, Right: 138})
 			bar := requiredRect(t, tt, "沉浸顶栏")
-			for _, label := range []string{"节目摘要", "播放频道名", "当前节目", "下一个节目", "节目单"} {
+			for _, label := range []string{"节目摘要", "播放频道台标", "播放频道名", "当前节目", "下一个节目", "节目单"} {
 				contained(t, label, bar, requiredRect(t, tt, label))
 			}
 			name := requiredRect(t, tt, "播放频道名")
@@ -85,8 +85,9 @@ func TestEPGLayout(t *testing.T) {
 			if divider.W != 2 || divider.X < name.X+name.W || divider.X+divider.W > current.X {
 				t.Fatal("separator must sit between the channel name and programme details")
 			}
-			if name.X != bar.X+16 || current.X <= name.X || current.X != next.X {
-				t.Fatal("channel name must stay left while programme lines align further right")
+			logo := requiredRect(t, tt, "播放频道台标")
+			if logo.X != bar.X+16 || name.X < logo.X+logo.W || current.X <= name.X || current.X != next.X {
+				t.Fatal("channel logo and name must precede the aligned programme lines")
 			}
 			video := requiredRect(t, tt, "视频画面")
 			controls := requiredRect(t, tt, "播放控制栏")

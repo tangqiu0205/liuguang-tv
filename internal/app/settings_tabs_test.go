@@ -137,15 +137,11 @@ func TestBackupTabLayoutAndIsolation(t *testing.T) {
 					t.Fatalf("%s leaked onto backup tab", absent)
 				}
 			}
-			if tt.HasText("最近一次导入前恢复快照：" + a.lastImportSnapshot) {
-				t.Fatal("recovery detail should be collapsed initially")
-			}
-			if err := tt.Click("日志、快捷键与恢复说明"); err != nil {
-				t.Fatal(err)
-			}
-			tt.Advance(250 * time.Millisecond)
 			if !tt.HasText("最近一次导入前恢复快照：" + a.lastImportSnapshot) {
 				t.Fatal("recovery snapshot hint missing")
+			}
+			if _, found := tt.Find("日志、快捷键与恢复说明"); found {
+				t.Fatal("removed help section is still visible")
 			}
 			for _, tab := range []string{"播放器", "外观", "关于", "订阅源"} {
 				if err := tt.Click(tab); err != nil {

@@ -309,7 +309,14 @@ func (a *application) cleanupEPG() {
 func (a *application) epgSummary(c *ui.Context) {
 	t := c.Theme()
 	current, next := epg.NowNext(a.schedule(a.playingEPGChannel()), time.Now())
-	ui.Row(c).Label(tr("节目摘要")).Grow(1).MinWidth(0).Gap(12).Children(func() {
+	ui.Row(c).Label(tr("节目摘要")).Grow(1).MinWidth(0).AlignItems(ui.Center).Gap(12).Children(func() {
+		ui.Column(c).Label(tr("播放频道台标")).Size(32, 32).Shrink(0).Center().Radius(9).Background(selectedBackground(t)).Children(func() {
+			if logo := a.logos.get(a.activeChannel.Logo, c.Services()); logo != nil {
+				ui.Image(c, logo).Size(30, 30).Shrink(0)
+			} else {
+				ui.Icon(c, tvIcon).Size(16, 16).TextColor(t.Accent)
+			}
+		})
 		ui.Column(c).Grow(0.3).MinWidth(32).Children(func() {
 			ui.Text(c, a.now).Label(tr("播放频道名")).FontSize(16).Bold().SingleLine().Tooltip(a.now)
 		})

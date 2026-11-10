@@ -108,6 +108,9 @@ func Merge(raw []Channel) []Channel {
 			if result[index].TVGID == "" && ch.TVGID != "" {
 				result[index].TVGID = ch.TVGID
 			}
+			if result[index].Logo == "" {
+				result[index].Logo = ch.Logo
+			}
 			result[index].Lines = append(result[index].Lines, line)
 		}
 	}

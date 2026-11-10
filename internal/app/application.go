@@ -17,6 +17,7 @@ import (
 )
 
 type application struct {
+	logos                                     logoCache
 	window                                    *mygo.Window
 	host                                      *embedhost.Host
 	videoViewport                             ui.Rect // Last laid-out client-space video region.
@@ -40,7 +41,6 @@ type application struct {
 	settingsAboutTab                          bool
 	aboutScroll                               ui.ScrollState
 	playerCompatibilityOpen                   bool
-	backupDetailsOpen                         bool
 	playerPathDraft                           string
 	playerPathDraftLoaded                     bool
 	appearanceScroll                          ui.ScrollState

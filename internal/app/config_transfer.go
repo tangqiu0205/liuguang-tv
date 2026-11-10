@@ -51,16 +51,11 @@ func (a *application) configTransferPanel(c *ui.Context) {
 		if a.diagnosticError != nil || a.diagnostics.Err() != nil {
 			ui.Text(c, tr("诊断日志写入失败，请检查配置目录的 logs/ 权限和磁盘空间。")).FontSize(11).TextColor(settingsDanger(t))
 		}
-		ui.Collapsible(c, tr("日志、快捷键与恢复说明"), &a.backupDetailsOpen, func() {
-			if a.lastImportSnapshot != "" {
-				ui.Column(c).Label(tr("恢复快照路径")).Children(func() {
-					ui.Text(c, tr("最近一次导入前恢复快照：")+a.lastImportSnapshot).FontSize(11).TextColor(t.TextMuted)
-				})
-			}
-			ui.Text(c, tr("恢复快照在 import-backups/ 中独立保留，不参与日常备份轮换；先关闭应用，再按 README 的方法恢复。首次建立配置没有旧快照。")).FontSize(11).TextColor(t.TextMuted)
-			ui.Text(c, tr("脱敏日志：配置目录 logs/diagnostic.log，单文件最多 1 MiB，保留 3 个文件。仅记录源哈希和错误类别，不记录地址或请求头。")).FontSize(11).TextColor(t.TextMuted)
-			ui.Text(c, tr("主界面快捷键：空格暂停/继续，上下切换当前筛选内的频道，左右调音量 ±5%。搜索栏展开和设置页禁用。视频持有焦点时需先点击原生界面；不注册全局快捷键。mpv 在非 Windows 暂不支持应用内暂停/音量。")).FontSize(11).TextColor(t.TextMuted)
-		}).FillWidth()
+		if a.lastImportSnapshot != "" {
+			ui.Column(c).Label(tr("恢复快照路径")).Children(func() {
+				ui.Text(c, tr("最近一次导入前恢复快照：")+a.lastImportSnapshot).FontSize(11).TextColor(t.TextMuted)
+			})
+		}
 	})
 }
 func (a *application) allowConfigTransfer() bool {
