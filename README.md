@@ -4,6 +4,8 @@
 
 本应用不预置节目源，也不捆绑或自动下载 mpv。请仅使用拥有观看权限的节目源。
 
+![流光 TV 界面截图](docs/screenshot.png)
+
 ## 下载与运行
 
 从 [GitHub Releases](https://github.com/tangqiu0205/liuguang-tv/releases) 下载对应平台和架构的包。Windows 提供安装程序和便携 ZIP；macOS 提供 DMG 和原生应用归档；Linux 提供 DEB 和原生 tar.gz。打包结构与 `tiaopin-fm` 一致，但不附带 mpv。
